@@ -1,0 +1,15 @@
+<div class="content">
+{{ range $key, $value := . }}
+    <div class="row">
+        <h1>
+            <a href="/edit/{{$value.Id}}">{{$value.Title}}</a>
+        </h1>
+        <div>
+            {{$value.Content | unescape}}
+        </div>
+        <a href="/delete/{{$value.Id }}" class="btn btn-danger">Remove</a>
+        <a href="/edit/{{$value.Id }}" class="btn btn-success">Edit</a>
+    </div>
+    <hr>
+{{ end }}
+</div>

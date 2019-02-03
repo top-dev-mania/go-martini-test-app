@@ -1,0 +1,43 @@
+version: '3.7'
+
+services:
+
+  mongoexpress:
+    image: 'mongo-express'
+    ports:
+      - "8081:8081"
+    links:
+      - mongodb
+    depends_on:
+      - mongodb
+    environment:
+      - ME_CONFIG_OPTIONS_EDITORTHEME=${ME_CONFIG_OPTIONS_EDITORTHEME}
+      - ME_CONFIG_MONGODB_SERVER=mongodb
+    networks:
+      - local
+
+  mongodb:
+    image: 'bitnami/mongodb:latest'
+    ports:
+      - "27017:27017"
+    expose:
+      - "27017"
+    volumes:
+      - ./docker/bitnami:/tmp/bitnami
+    networks:
+      - local
+
+  app:
+    build:
+      context: ./docker
+      dockerfile: Dockerfile
+    networks:
+      - local
+    volumes:
+      - "./:${WORKING_DIR}"
+    working_dir: ${WORKING_DIR}
+    ports:
+      - 3000:3000
+
+networks:
+  local:
